@@ -1,6 +1,9 @@
 # EcoStruxure PowerTag Link Gateway
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Breina/PowerTagGateway/validate.yaml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Breina/PowerTagGateway/hassfest.yaml)
+
 
 An integration to fully integrate Schneider's PowerTag ecosystem into Home Assistant.
 This will enable monitor electric circuits in great detail.
@@ -12,6 +15,7 @@ This will enable monitor electric circuits in great detail.
 * **Power**: active, apparent and power factor
 * **Energy**: partial (resettable) and total
 * **Demand**: active power, maximum active power (resettable) and timestamp of maximum active power
+* **Environment**: Temperature, humidity and CO2
 * **Alarm**: current state and its reasons
 * **Diagnostics**: gateway status, LQI, RSSI, packet loss, connectivity status
 
@@ -22,45 +26,25 @@ This will enable monitor electric circuits in great detail.
 
 ### Gateways
 
-* [A9XMWD20: Acti9 PowerTag Link](https://www.se.com/ww/en/product/A9XMWD20/acti9-powertag-link-wireless-to-modbus-tcp-ip-concentrator/)
-* [A9XMWD100: Acti9 PowerTag Link HD](https://www.se.com/ww/en/product/A9XMWD100/acti9-powertag-link-hd-wireless-to-modbus-tcp-ip-concentrator/)
+* A9XMWA20: Acti 9 Smartlink SI D
+* A9XMWD20: Acti9 PowerTag Link
+* A9XMWD100: Acti9 PowerTag Link HD
+* PAS400: EcoStruxure Panel Server - entry - 110-277 VAC/DC
+* PAS600: EcoStruxure Panel Server - universal - 110-277 VAC/DC
+* PAS600L: EcoStruxure Panel Server - universal - 24 VDC
+* PAS800: EcoStruxure Panel Server - advanced datalogger - 110-277 VAC/DC
+* PAS800L: EcoStruxure Panel Server - advanced datalogger - 24 VDC
+* PAS800P: EcoStruxure Panel Server - advanced datalogger - PEO
 
-### PowerTags
+### Wireless Devices
 
-* [A9MEM1520: PowerTag Monoconnect 63A 1P+Wire top and bottom](https://www.se.com/ww/en/product/A9MEM1520/energy-sensor-powertag-monoconnect-63a-1p+wire-top-and-bottom-position/)
-* [A9MEM1521: PowerTag Monoconnect 63A 1P+N top position](https://www.se.com/ww/en/product/A9MEM1521/energy-sensor-powertag-monoconnect-63a-1p+n-top-position/)
-* [A9MEM1522: PowerTag Monoconnect 63A 1P+N bottom position](https://www.se.com/ww/en/product/A9MEM1522/energy-sensor-powertag-monoconnect-63a-1p+n-bottom-position/)
-* [A9MEM1540: PowerTag Monoconnect 63A 3P top and bottom position](https://www.se.com/ww/en/product/A9MEM1540/energy-sensor-powertag-monoconnect-63a-3p-top-and-bottom-position/)
-* [A9MEM1541: PowerTag Monoconnect 63A 3P+N top position](https://se.com/ww/en/product/A9MEM1541/energy-sensor-powertag-monoconnect-63a-3p+n-top-position/)
-* [A9MEM1542: PowerTag Monoconnect 63A 3P+N bottom position](https://www.se.com/ww/en/product/A9MEM1542/energy-sensor-powertag-monoconnect-63a-3p+n-bottom-position/)
-* [A9MEM1543: PowerTag Monoconnect 230V LL 63A 3P top and bottom position](https://www.se.com/ww/en/product/A9MEM1543/energy-sensor-powertag-monoconnect-230v-ll-63a-3p-top-and-bottom-position/)
-* [A9MEM1560: PowerTag Flex 230V 63A 1P+N top and bottom position](https://www.se.com/ww/en/product/A9MEM1560/energy-sensor-powertag-flex-230v-63a-1p+n-top-and-bottom-position/)
-* [A9MEM1561: PowerTag phaseNeutral 63A 1P+N top position](https://www.se.com/ww/en/product/A9MEM1561/energy-sensor-powertag-phaseneutral-63a-1p+n-top-position/)
-* [A9MEM1562: PowerTag phaseNeutral 63A 1P+N bottom position](https://www.se.com/ww/en/product/A9MEM1562/energy-sensor-powertag-phaseneutral-63a-1p+n-bottom-position/)
-* [A9MEM1563: PowerTag PhaseNeutral 63A 1P+N bottom position for RCBO 18mm Slim](https://www.se.com/ww/en/product/A9MEM1563/energy-sensor-powertag-phaseneutral-63a-1p+n-bottom-position-for-rcbo-18mm-slim/)
-* [A9MEM1564: PowerTag Flex 110V 63A 1P+N top and bottom position](https://www.se.com/ww/en/product/A9MEM1564/energy-sensor-powertag-flex-110v-63a-1p+n-top-and-bottom-position/)
-* [A9MEM1570: PowerTag Flex 63A 3P+N top and bottom position](https://www.se.com/ww/en/product/A9MEM1570/energy-sensor-powertag-flex-63a-3p+n-top-and-bottom-position/)
-* [A9MEM1571: PowerTag phaseNeutral 63A 3P+N top position](https://www.se.com/ww/en/product/A9MEM1571/energy-sensor-powertag-phaseneutral-63a-3p+n-top-position/)
-* [A9MEM1572: PowerTag phaseNeutral 63A 3P+N bottom position](https://www.se.com/ww/en/product/A9MEM1572/energy-sensor-powertag-phaseneutral-63a-3p+n-bottom-position/)
-* [A9MEM1573: PowerTag Flex 63A 3P top and bottom position](https://www.se.com/ww/en/product/A9MEM1573/energy-sensor-powertag-flex-63a-3p-top-and-bottom-position/)
-* [A9MEM1574: PowerTag Flex 127/220V 63A 3P+N top and bottom position](https://www.se.com/ww/en/product/A9MEM1574/energy-sensor-powertag-flex-127-220v-63a-3p+n-top-and-bottom-position/)
+* All PowerTags
+* Acti9 Active
+* All environment sensors (not HeatTag)
 
-#### Possible integrations
+#### Further integrations
 
-> **Warning**
->
-> The following PowerTags are not yet supported, but are compatible with the Link Gateway.
-> If integration is desired, please [create an issue](https://github.com/Breina/PowerTagGateway/issues) requesting it as an additional feature.
-> 
-> As it is not practical to integrate a device one doesn't have, consider sending the PowerTag to a maintainer of this project.
-
-* A9MEM1580
-* A9MEM1590, A9MEM1591, A9MEM1592, A9MEM1593
-* LV434020, LV434021, LV434022, LV434023
-* A9XMC1D3, A9XMC2D3
-* SMT10020
-* A9XMWRD
-
+If there's something you're missing, please create a GitHub issue. 
 
 # Installation
 
@@ -71,14 +55,50 @@ It is assumed that you have configured your gateway and all of its powertags.
 A hard requirement for this integration to work is the modbus TCP service to be enabled, which it is by default.
 To check whether this is the case, open the device's configuration webpage through navigating to its IP address in your web browser.
 
-Navigate to _SETTINGS_ > _IP NETWORK SERVICES_
-
-![The IP services configuration](images/Web_config.png)
-
 Check that the _MODBUS TCP_ service is enabled.
 Its port is set to 502 by default, if you diverge from this, **please keep your port number in mind for later**.
 
 To make your life easier later, it's also recommended to enable the _DISCOVERY_ service, its port doesn't matter.
+
+### PowerTag Link
+
+1. Navigate to _SETTINGS_ > _IP NETWORK SERVICES_
+2. Enable Modbus TCP
+3. Optional: Enable Discovery
+4. Save
+
+![The IP services configuration](images/Web_config.png)
+
+_The IP services configuration_
+
+### SmartLink
+
+Follow the same steps as for PowerTag Link.
+
+> [!IMPORTANT]  
+> In addition, SmartLink users need to configure the modbus addresses of their wireless devices 
+> from 150 upwards to 169 without skipping one.
+
+### Panel Server
+
+1. Navigate to _Settings_ > _Network communication_ > Services
+2. Enable Modbus TCP/IP
+3. _Save_ > _Save_
+4. Optional: activate discovery
+   1. Navigate to _Settings_ > _Network communication_ > Ethernet
+   2. Under _Switched port settings_, disable _IPv6 activation_. The library perform DPWS discovery does not currently support IPv6. If you need this, you can not use discovery and will need to enter the device's IP address manually. [GitHub issue](https://github.com/andreikop/python-ws-discovery/issues/58)
+   3. _Save_ > _Save & apply configuration_
+   4. Navigate to _Settings_ > _Network communication_ > DPWS
+   5. Enable _DPWS Activation_
+   6. _Save_ > _Save_
+
+![The modbus service configuration](images/Web_config_panel_modbus.png)
+
+_The modbus service configuration_
+
+![The DPWS service configuration](images/Web_config_panel_dpws.png)
+
+_The DPWS service configuration_
 
 ## Installation
 
@@ -90,7 +110,7 @@ To make your life easier later, it's also recommended to enable the _DISCOVERY_ 
 
 1. Open HACS
 2. _+ EXPLORE & DOWNLOAD REPOSITORIES_
-3. Find _NAD Multi-room Audio Controller_ in this list
+3. Find _EcoStruxure PowerTag Link Gateway_ in this list
 4. _DOWNLOAD THIS REPOSITORY WITH HACS_
 5. _DOWNLOAD_
 6. Restart Home Assistant (_Settings_ > _System_ > _RESTART_)

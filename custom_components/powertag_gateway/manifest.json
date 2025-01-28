@@ -1,13 +1,11 @@
 {
   "domain": "powertag_gateway",
   "name": "PowerTag Link Gateway",
-  "documentation": "https://github.com/Breina/PowerTagGateway",
-  "issue_tracker": "https://github.com/Breina/PowerTagGateway/issues",
-  "codeowners": [
-    "@Breina"
-  ],
-  "requirements": [],
-  "iot_class": "local_polling",
+  "codeowners": ["@Breina"],
   "config_flow": true,
-  "version": "0.1.1"
+  "documentation": "https://github.com/Breina/PowerTagGateway",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/Breina/PowerTagGateway/issues",
+  "requirements": ["pymodbus==3.8.3"],
+  "version": "1.5.8"
 }
