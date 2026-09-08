@@ -1,5 +1,6 @@
 """PowerTag Link Gateway integration"""
 
+import asyncio
 import logging
 from enum import Enum, auto
 
@@ -11,6 +12,7 @@ from pymodbus.exceptions import ConnectionException
 
 from .const import (
     CONF_CLIENT,
+    CONF_SETUP_LOCK,
     DOMAIN,
     CONF_TYPE_OF_GATEWAY,
     CONF_DEVICE_UNIQUE_ID_VERSION,
@@ -56,6 +58,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         CONF_CLIENT: client,
         CONF_INTERNAL_URL: presentation_url,
         CONF_DEVICE_UNIQUE_ID_VERSION: unique_id_version,
+        # Platforms scan the gateway one after another, see async_setup_entities.
+        CONF_SETUP_LOCK: asyncio.Lock(),
     }
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)

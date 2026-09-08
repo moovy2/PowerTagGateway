@@ -987,22 +987,16 @@ class SchneiderModbus:
             if not await self.__ensure_connected():
                 return None
 
-            result = await asyncio.wait_for(
-                self.client.read_holding_registers(
-                    address=address, count=count, device_id=slave_id
-                ),
-                timeout=5.0,
+            result = await self.client.read_holding_registers(
+                address=address, count=count, device_id=slave_id
             )
             if result.isError():
                 _LOGGER.debug(f"Modbus error reading {address} from slave ID {slave_id}")
                 return None
             return result.registers
 
-        except asyncio.TimeoutError:
-            _LOGGER.debug(f"Timeout when fetching address {address} from slave ID {slave_id}")
-            return None
         except (ConnectionException, ModbusIOException) as e:
-            _LOGGER.error(f"Error when fetching {address} from slave ID {slave_id}: {e}")
+            _LOGGER.warning(f"Error when fetching {address} from slave ID {slave_id}: {e}")
             return None
 
     async def __async_write(
@@ -1012,20 +1006,14 @@ class SchneiderModbus:
             if not await self.__ensure_connected():
                 return None
 
-            result = await asyncio.wait_for(
-                self.client.write_registers(address, registers, device_id=slave_id),
-                timeout=5.0,
+            result = await self.client.write_registers(
+                address, registers, device_id=slave_id
             )
             if result.isError():
                 _LOGGER.debug(f"Modbus error writing {address} to slave ID {slave_id}")
                 return None
-        except asyncio.TimeoutError:
-            _LOGGER.debug(
-                f"Timeout when writing to address {address} to slave ID {slave_id}"
-            )
-            return None
         except (ConnectionException, ModbusIOException) as e:
-            _LOGGER.error(f"Error when writing to {address} on slave ID {slave_id}: {e}")
+            _LOGGER.warning(f"Error when writing to {address} on slave ID {slave_id}: {e}")
             return None
 
     async def __identify(self, _: int):

@@ -14,6 +14,9 @@ from .schneider_modbus import SchneiderModbus, LinkStatus, PanelHealth, TypeOfGa
 
 _LOGGER = logging.getLogger(__name__)
 
+# One Modbus request in flight per platform.
+PARALLEL_UPDATES = 1
+
 
 def list_binary_sensors() -> list[type[WirelessDeviceEntity]]:
     return [

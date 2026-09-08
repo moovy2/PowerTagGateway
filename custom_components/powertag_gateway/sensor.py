@@ -33,6 +33,9 @@ PLATFORMS: list[str] = ["sensor"]
 
 _LOGGER = logging.getLogger(__name__)
 
+# One Modbus request in flight per platform.
+PARALLEL_UPDATES = 1
+
 
 def list_sensors() -> list[type[WirelessDeviceEntity]]:
     return [

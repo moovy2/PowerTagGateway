@@ -10,7 +10,7 @@ from homeassistant.helpers.entity import Entity, DeviceInfo
 from homeassistant.helpers import device_registry as dr
 
 from . import UniqueIdVersion
-from .const import CONF_CLIENT, DOMAIN, CONF_DEVICE_UNIQUE_ID_VERSION
+from .const import CONF_CLIENT, DOMAIN, CONF_DEVICE_UNIQUE_ID_VERSION, CONF_SETUP_LOCK
 from .const import GATEWAY_DOMAIN, TAG_DOMAIN
 from .device_features import (
     FeatureClass,
@@ -265,6 +265,19 @@ async def async_setup_entities(
     powertag_entities: list[type[WirelessDeviceEntity]],
 ):
     data = hass.data[DOMAIN][config_entry.entry_id]
+    # HA sets up the sensor, binary_sensor and button platforms concurrently, and
+    # each of them walks every device on the gateway. Interleaving three scans over
+    # one Modbus link just makes each of them slower, so take turns instead.
+    async with data[CONF_SETUP_LOCK]:
+        return await _async_setup_entities(hass, config_entry, powertag_entities)
+
+
+async def _async_setup_entities(
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    powertag_entities: list[type[WirelessDeviceEntity]],
+):
+    data = hass.data[DOMAIN][config_entry.entry_id]
     client = data[CONF_CLIENT]
     presentation_url = data[CONF_INTERNAL_URL]
     device_unique_id_version = data[CONF_DEVICE_UNIQUE_ID_VERSION]
@@ -320,6 +333,14 @@ async def async_setup_entities(
 
             _LOGGER.debug(f"Device #{modbus_address} is {commercial_reference}")
 
+            if not commercial_reference:
+                _LOGGER.warning(
+                    f"Could not read the product code of the device at address {modbus_address} "
+                    f"(got {commercial_reference!r}); will ignore this one. If this device exists "
+                    f"in the gateway, reload the integration to try again."
+                )
+                continue
+
             try:
                 feature_class = from_commercial_reference(commercial_reference)
             except UnknownDevice:
@@ -349,10 +370,19 @@ async def async_setup_entities(
         device_name = tag_device["name"]
 
         tag_phase_sequence = await client.tag_phase_sequence(modbus_address)
-        if not tag_phase_sequence:
+        if tag_phase_sequence is None:
+            tag_phase_sequence = PhaseSequence.INVALID
+        # PhaseSequence.INVALID is a truthy enum member, so `if not ...` never fires.
+        if tag_phase_sequence is PhaseSequence.INVALID and feature_class not in [
+            FeatureClass.TEMP0,
+            FeatureClass.TEMP1,
+            FeatureClass.CO2,
+        ]:
             _LOGGER.warning(
-                f"The phase sequence of {device_name} was not defined."
-                f"Skipping adding phase-specific entities..."
+                f"The phase sequence of {device_name} (address {modbus_address}) could not be "
+                f"read or is not configured on the gateway; skipping its per-phase entities "
+                f"(current, voltage, per-phase power and energy). Check the device's phase "
+                f"sequence in the gateway's web UI, then reload the integration."
             )
 
         for powertag_entity in [
